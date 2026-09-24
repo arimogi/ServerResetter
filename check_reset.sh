@@ -9,7 +9,8 @@
 NODE_ID="lab_s3"
 URL="https://kutuju.com/reset.php"
 LOG_FILE="/var/log/status_reset_check.log"
-CURL="/home/disertasi/anaconda3/bin/curl"
+CURL1="/home/disertasi/anaconda3/bin/curl"
+CURL2="/usr/bin/curl"
 
 # Fungsi untuk mencatat log
 log_message() {
@@ -17,10 +18,17 @@ log_message() {
     echo "[$(date "+%Y-%m-%d %H:%M:%S %Z")] $MESSAGE" | tee -a "$LOG_FILE"
 }
 
-# Cek curl
-if [ ! -x "$CURL" ]; then
+# Cek curl — salah satu harus ada
+if [ ! -x "$CURL1" ] && [ ! -x "$CURL2" ]; then
     log_message "ERROR: curl belum terpasang"
     exit 1
+fi
+
+# Pilih curl yang tersedia
+if [ -x "$CURL1" ]; then
+    CURL="$CURL1"
+else
+    CURL="$CURL2"
 fi
 
 # Ambil konten halaman
