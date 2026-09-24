@@ -6,7 +6,26 @@
 # NODE_ID="rog_03"
 # NODE_ID="rog_04"
 # NODE_ID="lab_220"
-NODE_ID="lab_s3"
+# NODE_ID="lab_s3"
+
+# Lokasi file .env
+FILE_ENV=".env"
+
+# Muat nilai dari .env
+if [ -f "$FILE_ENV" ]; then
+    # Ekstrak nilai NODE_ID dari file
+    NODE_ID=$(grep -E '^NODE_ID=' "$FILE_ENV" | sed 's/^NODE_ID=//' | tr -d '"' | tr -d "'")
+else
+    echo "ERROR: File $FILE_ENV tidak ditemukan!"
+    exit 1
+fi
+
+# Pastikan NODE_ID tidak kosong
+if [ -z "$NODE_ID" ]; then
+    echo "ERROR: NODE_ID tidak ditemukan atau kosong di $FILE_ENV!"
+    exit 1
+fi
+
 URL="https://kutuju.com/reset.php"
 LOG_FILE="/var/log/status_reset_check.log"
 CURL1="/home/disertasi/anaconda3/bin/curl"
