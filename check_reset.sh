@@ -8,8 +8,38 @@
 # NODE_ID="lab_220"
 # NODE_ID="lab_s3"
 
-# Lokasi file .env
-FILE_ENV=".env"
+# Daftar lokasi file .env yang akan dicari
+ENV_PATHS=(
+    "/home/inspirasi/Projects/ServerResetter/.env"
+    "/home/disertasi/Projects/ServerResetter/.env"
+)
+
+# Cari dan muat .env
+FILE_ENV=""
+for path in "${ENV_PATHS[@]}"; do
+    if [ -f "$path" ]; then
+        FILE_ENV="$path"
+        break
+    fi
+done
+
+# Jika tidak ditemukan di mana pun
+if [ -z "$FILE_ENV" ]; then
+    echo "ERROR: File .env tidak ditemukan di lokasi berikut:"
+    for p in "${ENV_PATHS[@]}"; do
+        echo "  - $p"
+    done
+    exit 1
+fi
+
+# Baca nilai NODE_ID dari file .env
+NODE_ID=$(grep -E '^NODE_ID=' "$FILE_ENV" | sed 's/^NODE_ID=//' | tr -d '"' | tr -d "'")
+
+# Pastikan NODE_ID tidak kosong
+if [ -z "$NODE_ID" ]; then
+    echo "ERROR: NODE_ID tidak ditemukan atau kosong di $FILE_ENV"
+    exit 1
+fi
 
 # Muat nilai dari .env
 if [ -f "$FILE_ENV" ]; then
