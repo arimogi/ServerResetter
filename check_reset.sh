@@ -9,6 +9,7 @@
 NODE_ID="lab_s3"
 URL="https://kutuju.com/reset.php"
 LOG_FILE="/var/log/status_reset_check.log"
+CURL="/home/disertasi/anaconda3/bin/curl"
 
 # Fungsi untuk mencatat log
 log_message() {
@@ -17,13 +18,13 @@ log_message() {
 }
 
 # Cek curl
-if ! command -v curl &> /dev/null; then
+if [ ! -x "$CURL" ]; then
     log_message "ERROR: curl belum terpasang"
     exit 1
 fi
 
 # Ambil konten halaman
-RESPONSE=$(curl -s -f -m 10 "$URL")
+RESPONSE=$("$CURL" -s -f -m 10 "$URL")
 if [ $? -ne 0 ]; then
     log_message "ERROR: Gagal mengakses $URL"
     exit 1
