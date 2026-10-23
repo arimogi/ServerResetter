@@ -90,7 +90,7 @@ fi
 # Cek kondisi
 if echo "$RESPONSE" | grep -qE "${NODE_ID}[[:space:]]*=[[:space:]]*true"; then
     log_message "Nilai adalah TRUE. Server akan melakukan reset..."
-    
+
     # Jalankan reboot, cek hasilnya
     if sudo reboot; then
         log_message "Reboot perintah dikirim ke sistem"
