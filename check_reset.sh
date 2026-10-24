@@ -86,6 +86,7 @@ if [ $? -ne 0 ]; then
     log_message "ERROR: Gagal mengakses $URL"
     exit 1
 fi
+echo "$RESPONSE" > /var/log/respond_reset.log
 
 # Cek kondisi
 if echo "$RESPONSE" | grep -qE "${NODE_ID}[[:space:]]*=[[:space:]]*true"; then
